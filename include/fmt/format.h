@@ -473,7 +473,7 @@ template <typename U>
 void buffer<T>::append(const U* begin, const U* end) {
   std::size_t new_size = size_ + to_unsigned(end - begin);
   reserve(new_size);
-  std::uninitialized_copy(begin, end, make_checked(ptr_, capacity_) + size_);
+  std::uninitialized_copy(begin, end, make_checked(ptr_, capacity_) + static_cast<intmax_t>(size_));
   size_ = new_size;
 }
 }  // namespace internal
@@ -552,7 +552,7 @@ class basic_memory_buffer : private Allocator, public internal::buffer<T> {
       : Allocator(alloc) {
     this->set(store_, SIZE);
   }
-  ~basic_memory_buffer() { deallocate(); }
+  ~basic_memory_buffer() FMT_OVERRIDE { deallocate(); }
 
  private:
   // Move data from other to this buffer.

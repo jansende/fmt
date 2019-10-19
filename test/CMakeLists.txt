@@ -62,7 +62,7 @@ if (HAVE_FNO_DELETE_NULL_POINTER_CHECKS)
 endif ()
 
 # Use less strict pedantic flags for the tests because GMock doesn't compile
-# cleanly with -pedantic and -std=c++98.
+# cleanly with -Wpedantic and -std=c++98.
 if (CMAKE_COMPILER_IS_GNUCXX OR (CMAKE_CXX_COMPILER_ID MATCHES "Clang"))
     #set(PEDANTIC_COMPILE_FLAGS -Wall -Wextra -Wno-long-long -Wno-variadic-macros)
 endif ()

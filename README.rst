@@ -49,7 +49,7 @@ Features
 * `Portability <https://fmt.dev/latest/index.html#portability>`_ with
   consistent output across platforms and support for older compilers.
 * Clean warning-free codebase even on high warning levels
-  (``-Wall -Wextra -pedantic``).
+  (``-Wall -Wextra -Wpedantic``).
 * Support for wide strings.
 * Optional header-only configuration enabled with the ``FMT_HEADER_ONLY`` macro.
 

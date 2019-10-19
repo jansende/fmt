@@ -71,7 +71,7 @@ include(CheckCXXCompilerFlag)
 set(FMT_REQUIRED_FEATURES cxx_auto_type cxx_variadic_templates)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-  set(PEDANTIC_COMPILE_FLAGS -pedantic-errors -Wall -Wextra -pedantic
+  set(PEDANTIC_COMPILE_FLAGS -Wpedantic-errors -Wall -Wextra -Wpedantic
       -Wold-style-cast -Wundef
       -Wredundant-decls -Wwrite-strings -Wpointer-arith
       -Wcast-qual -Wformat=2 -Wmissing-include-dirs
@@ -97,7 +97,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  set(PEDANTIC_COMPILE_FLAGS -Wall -Wextra -pedantic -Wconversion
+  set(PEDANTIC_COMPILE_FLAGS -Wall -Wextra -Wpedantic -Wconversion
       -Wno-sign-conversion)
   check_cxx_compiler_flag(-Wzero-as-null-pointer-constant HAS_NULLPTR_WARNING)
   if (HAS_NULLPTR_WARNING)

@@ -850,12 +850,12 @@ FMT_FUNC internal::utf8_to_utf16::utf8_to_utf16(string_view s) {
 
   int length = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s.data(),
                                    s_size, nullptr, 0);
-  if (length == 0) FMT_THROW(windows_error(GetLastError(), ERROR_MSG));
-  buffer_.resize(length + 1);
+  if (length == 0) FMT_THROW(windows_error(static_cast<int>(GetLastError()), ERROR_MSG));
+  buffer_.resize(static_cast<size_t>(length + 1));
   length = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, s.data(), s_size,
                                &buffer_[0], length);
-  if (length == 0) FMT_THROW(windows_error(GetLastError(), ERROR_MSG));
-  buffer_[length] = 0;
+  if (length == 0) FMT_THROW(windows_error(static_cast<int>(GetLastError()), ERROR_MSG));
+  buffer_[static_cast<size_t>(length)] = 0;
 }
 
 FMT_FUNC internal::utf16_to_utf8::utf16_to_utf8(wstring_view s) {
@@ -877,12 +877,12 @@ FMT_FUNC int internal::utf16_to_utf8::convert(wstring_view s) {
 
   int length = WideCharToMultiByte(CP_UTF8, 0, s.data(), s_size, nullptr, 0,
                                    nullptr, nullptr);
-  if (length == 0) return GetLastError();
-  buffer_.resize(length + 1);
+  if (length == 0) return static_cast<int>(GetLastError());
+  buffer_.resize(static_cast<size_t>(length + 1));
   length = WideCharToMultiByte(CP_UTF8, 0, s.data(), s_size, &buffer_[0],
                                length, nullptr, nullptr);
-  if (length == 0) return GetLastError();
-  buffer_[length] = 0;
+  if (length == 0) return static_cast<int>(GetLastError());
+  buffer_[static_cast<size_t>(length)] = 0;
   return 0;
 }
 
@@ -903,10 +903,10 @@ FMT_FUNC void internal::format_windows_error(internal::buffer<char>& out,
     buf.resize(inline_buffer_size);
     for (;;) {
       wchar_t* system_message = &buf[0];
-      int result = FormatMessageW(
+      int result = static_cast<int>(FormatMessageW(
           FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr,
-          error_code, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), system_message,
-          static_cast<uint32_t>(buf.size()), nullptr);
+          static_cast<DWORD>(error_code), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), system_message,
+          static_cast<uint32_t>(buf.size()), nullptr));
       if (result != 0) {
         utf16_to_utf8 utf8_message;
         if (utf8_message.convert(system_message) == ERROR_SUCCESS) {
